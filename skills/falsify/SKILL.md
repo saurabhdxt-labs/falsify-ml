@@ -221,46 +221,46 @@ Record the oracle (name, how to obtain it, why it is independent) in `falsify/<s
 there can be found and obvious noise can be rejected. There are two distinct claims here; do not
 let one stand in for the other.
 
-**4a — The stats ruler is straight (self-test).** This proves the diagnostic *math* (the AUROC
-computation) works. It does **not** prove the user's ML pipeline works.
+**First, pick the metric for the task** — the diagnostic is not classification-only. Pass `--metric`:
+`auroc` for binary classification, `pearson` for regression (continuous targets), `spearman` for
+ranking / monotonic relationships. Use the metric your Stage-4 eval design justified. Everything
+below works identically for all three; the examples just pick one. (`--metric` defaults to `auroc`
+because binary classification is the most common case, but it is a default, not a privileged path —
+regression and ranking are first-class.)
+
+**4a — The stats ruler is straight (self-test).** This proves the diagnostic *math* (the chosen
+metric's computation) works. It does **not** prove the user's ML pipeline works.
 
 ```
-python3 "${FALSIFY_SKILL_DIR:-skills/falsify}/scripts/planted_signal.py" --self-test
+# classification:  python3 ".../scripts/planted_signal.py" --self-test --metric auroc
+# regression:      python3 ".../scripts/planted_signal.py" --self-test --metric pearson
+# ranking:         python3 ".../scripts/planted_signal.py" --self-test --metric spearman
+python3 "${FALSIFY_SKILL_DIR:-skills/falsify}/scripts/planted_signal.py" --self-test --metric <metric>
 ```
 
-It injects a 10σ signal (positives mean 1.0±0.1, negatives 0.0±0.1) and confirms near-perfect
-AUROC, then injects pure noise and confirms AUROC sits near 0.5. If this fails, the diagnostic
-itself is broken and every later number is meaningless — **STOP and fix the plumbing first.**
+It injects an obvious planted signal and confirms the metric is near-perfect (AUROC→1.0, or
+correlation→1.0), then injects pure noise and confirms the metric collapses to its no-skill floor
+(AUROC→0.5, or correlation→0). If this fails, the diagnostic itself is broken and every later number
+is meaningless — **STOP and fix the plumbing first.**
 
-**4b — The user's pipeline separates the cases it scored.** Run the AUROC check on the user's
-*own* scored output (a CSV with a score column and a binary label column):
+**4b — The user's pipeline separates the cases it scored.** Run the metric on the user's *own* scored
+output — a CSV with a score column and a target column (binary 0/1 for `auroc`; continuous for
+`pearson`/`spearman` — continuous targets are accepted, not rejected):
 
 ```
 python3 "${FALSIFY_SKILL_DIR:-skills/falsify}/scripts/planted_signal.py" \
-    --scores <path.csv> --score-col <score> --labels-col <label>
+    --scores <path.csv> --score-col <score> --labels-col <target> --metric <metric>
 ```
 
-This proves separation **on these particular outputs only**. It does *not* prove a strong
+This proves the relationship **on these particular outputs only**. It does *not* prove a strong
 feature survives the user's full train→infer path.
 
-**Non-binary tasks — pick the metric.** Add `--metric` to both 4a and 4b: `auroc` (binary
-classification, default), `pearson` (regression — continuous targets), `spearman` (ranking /
-monotonic). For regression/ranking the `--labels-col` holds continuous targets, not 0/1, and they
-are accepted (not rejected) when the metric is pearson/spearman. Example for a regression model:
-
-```
-python3 "${FALSIFY_SKILL_DIR:-skills/falsify}/scripts/planted_signal.py" --self-test --metric pearson
-python3 "${FALSIFY_SKILL_DIR:-skills/falsify}/scripts/planted_signal.py" \
-    --scores <preds.csv> --score-col <pred> --labels-col <actual> --metric pearson
-```
-
 The self-test (4a) has tunable defaults if you ever need them: `--n` (rows, default 2000),
-`--sigma` (separation for auroc, default 10), `--seed`, `--metric` (default `auroc`),
-`--auroc-floor` (signal floor — default 0.99 for auroc, 0.8 for correlation metrics; must lie in
-the metric's valid range: [0,1] for auroc, [-1,1] for pearson/spearman), and `--noise-band`
-(default `0.40,0.60` for auroc, `-0.1,0.1` for correlations). Out-of-range or inverted values are
-rejected loudly rather than producing a vacuous PASS/FAIL. The defaults are calibrated; change them
-only with a reason.
+`--sigma` (separation, default 10), `--seed`, `--metric` (default `auroc`), `--auroc-floor` (signal
+floor — default 0.99 for auroc, 0.8 for correlation metrics; must lie in the metric's valid range:
+[0,1] for auroc, [-1,1] for pearson/spearman), and `--noise-band` (default `0.40,0.60` for auroc,
+`-0.1,0.1` for correlations). Out-of-range or inverted values are rejected loudly rather than
+producing a vacuous PASS/FAIL. The defaults are calibrated; change them only with a reason.
 
 **4c — The strongest form (no script can do this for you): true upstream injection.** Add a
 synthetic feature where known-positives sit ~10σ from known-negatives, then re-run the user's
@@ -273,9 +273,11 @@ their pipeline supports injection.
   Any NOT WORKING you reach later is about the *claim*, not broken plumbing.
 - Harness **cannot detect a 10σ signal or cannot reject noise** → **STOP.** Fix the plumbing first.
 
-If `planted_signal.py` is not present in this build, do 4a by hand: construct two groups (one at
-~1.0, one at ~0.0, each with small noise), compute AUROC, confirm it is ≈1.0; then score pure
-noise and confirm AUROC ≈0.5. Record either way in `falsify/<slug>/meta_falsification.md`.
+If `planted_signal.py` is not present in this build, do 4a by hand: construct an obvious signal in
+your task's terms (two well-separated groups for classification, or a strong linear/monotone relation
+for regression/ranking), compute your chosen metric, confirm it is near-perfect; then score pure
+noise and confirm the metric collapses to its no-skill floor. Record either way in
+`falsify/<slug>/meta_falsification.md`.
 
 ## Gate 5 — Run the closed-loop mutual-exclusivity diagnostic
 
