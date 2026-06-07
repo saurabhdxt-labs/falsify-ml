@@ -1,5 +1,8 @@
 # falsify — *is this ML project worth pursuing?*
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20584717.svg)](https://doi.org/10.5281/zenodo.20584717)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 A model-agnostic framework for deciding whether an ML project is worth your time — **before** you
 burn weeks and GPU hours on it, and before you trust any claim it produces. It walks ten lifecycle
 stages and returns a single verdict: **PURSUE / DO NOT PURSUE / INSUFFICIENT EVIDENCE**.

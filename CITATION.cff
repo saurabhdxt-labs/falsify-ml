@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use falsify-ml, please cite it as below."
+title: "falsify-ml: A Falsification Gate for ML Claims"
+abstract: >-
+  A ten-stage, model-agnostic protocol and open-source tool that treats every
+  load-bearing ML claim as a hypothesis to be falsified rather than a result to
+  be confirmed, producing a single project-level verdict: PURSUE / DO NOT PURSUE
+  / INSUFFICIENT EVIDENCE. Pure Python standard library, zero dependencies.
+authors:
+  - family-names: Dixit
+    given-names: Saurabh
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/saurabhdxt-labs/falsify-ml"
+url: "https://github.com/saurabhdxt-labs/falsify-ml"
+doi: 10.5281/zenodo.20584717
+version: 1.0.0
+date-released: 2026-06-07
+keywords:
+  - machine learning
+  - falsification
+  - model validation
+  - data leakage
+  - reproducibility
