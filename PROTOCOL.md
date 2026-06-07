@@ -85,8 +85,16 @@ Write the expected numbers, ranges, and relationships **before** you look at any
 If you skip this, you will post-hoc rationalize whatever you see as success. The TRUE
 shape goes in a file, dated, not in your head.
 
-> Example: "If the model works, AUROC on held-out instances ≥ 0.75, AND it beats the obvious
-> single-feature heuristic by ≥ 5 points, AND its top-decile precision ≥ 2× base rate."
+> Example *(classification)*: "If the model works, AUROC on held-out instances ≥ 0.75, AND it
+> beats the obvious single-feature heuristic by ≥ 5 points, AND its top-decile precision ≥ 2× base
+> rate."
+>
+> Example *(regression)*: "If the model works, Pearson r between prediction and held-out actual
+> ≥ 0.6, AND it beats last-value-carried-forward by ≥ 20% lower MAE."
+>
+> The metric is whatever your task uses (AUROC for binary ranking, Pearson/RMSE for regression,
+> rank-correlation/NDCG for ranking) — what matters is that it's a number, pre-committed, that
+> could come back below the bar.
 
 ### 3. Predict the FALSE shape — the counterfactual
 
@@ -94,7 +102,8 @@ What would you see if the hypothesis is wrong? If you cannot articulate this, th
 hypothesis is **unfalsifiable and worthless** — discard it before wasting time measuring.
 
 > Example: "If the model is just memorizing one dominant feature, then ablating (zeroing) that
-> single feature collapses AUROC to ~0.5, and the model adds nothing over the obvious heuristic."
+> single feature collapses the metric to its no-skill floor (AUROC → ~0.5, or correlation → ~0),
+> and the model adds nothing over the obvious heuristic."
 
 Every test must be able to go red. A test that cannot fail is decoration.
 
