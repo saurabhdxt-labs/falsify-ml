@@ -4,6 +4,10 @@ A model-agnostic framework for deciding whether an ML project is worth your time
 burn weeks and GPU hours on it, and before you trust any claim it produces. It walks ten lifecycle
 stages and returns a single verdict: **PURSUE / DO NOT PURSUE / INSUFFICIENT EVIDENCE**.
 
+Most ML tooling helps you *build*. Almost nothing helps you **kill a bad idea before you build it**,
+or catch a model that scores beautifully while measuring nothing real. That's the gap this fills: it
+asks "how would I know if this *doesn't* work?" and then tries hard to prove exactly that.
+
 The deepest stage is *falsification* — trying as hard as possible to **kill** a model claim rather
 than confirm it — but that is one stage of ten, not the whole job. Most ML projects fail upstream
 (wrong problem, leaked split, data that can't support the claim, no baseline, bad economics) or
@@ -12,12 +16,17 @@ downstream (silent drift, never knowing when to stop). This framework covers all
 Distilled from real ML-validation failures; pure Python standard library, **zero third-party
 dependencies**, runs on any Python 3.8+.
 
+**Scope:** this is for **ML claims** — models, detectors, classifiers, forecasters, rankers that
+have *data, labels, and a metric*. It is **not** an LLM/agent/generative-quality evaluator (those
+need different machinery — eval-set design, judge calibration, grounding tests). If your "AI" is a
+classifier with labels and a held-out metric, it fits; if it's a chatbot or an agent, it doesn't.
+
 ---
 
 ## Install
 
 ```
-git clone <this repo>
+git clone https://github.com/saurabhdxt-labs/falsify-ml.git
 cd falsify-ml
 ./install.sh
 ```
@@ -32,6 +41,10 @@ cd falsify-ml
 If `~/.local/bin` isn't on your `PATH`, the installer prints the line to add (it won't edit your
 shell rc for you). `./uninstall.sh` removes both symlinks (and never deletes anything it didn't
 create).
+
+You don't have to install to try it — the scripts run directly:
+`python3 skills/falsify/scripts/data_reality.py --n 150 --target-effect 0.3`. The `/falsify` skill
+requires [Claude Code](https://claude.com/claude-code); the CLI does not.
 
 ---
 
