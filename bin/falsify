@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""falsify — standalone CLI for the ML-project-viability diagnostics.
+
+The no-Claude front door. Routes subcommands to the six pure-stdlib scripts and passes their
+arguments and exit codes straight through, so each subcommand keeps its own --help and behavior.
+
+  falsify leakage      ...   Stage 1   — leakage / split hygiene (leakage_check.py)
+  falsify reality      ...   Stage 1.5 — data reality / feasibility (data_reality.py)
+  falsify value        ...   Stage 2.5 — value / economics (value_check.py)
+  falsify planted      ...   Stage 4   — planted-signal meta-falsification (planted_signal.py)
+  falsify closed-loop  ...   Stage 5   — closed-loop diagnostic (closed_loop_check.py)
+  falsify prereg       ...   Stage 2   — date-locked pre-registration (prereg_lock.py)
+
+  falsify --help             list subcommands
+  falsify --where            print the resolved repo root (where LIFECYCLE.md / templates live)
+
+Self-locating: resolves its scripts relative to this file, so it works from any directory.
+Needs only Python 3.8+. The interactive 10-stage walkthrough is the /falsify Claude skill;
+this CLI is the mechanical subset that runs without Claude.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# This file lives at <repo>/bin/falsify ; scripts live at <repo>/skills/falsify/scripts/.
+_HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent
+_SCRIPTS_DIR = _REPO_ROOT / "skills" / "falsify" / "scripts"
+
+# subcommand -> script filename
+_ROUTES = {
+    "leakage": "leakage_check.py",
+    "reality": "data_reality.py",
+    "value": "value_check.py",
+    "planted": "planted_signal.py",
+    "closed-loop": "closed_loop_check.py",
+    "prereg": "prereg_lock.py",
+}
+
+_SUMMARY = {
+    "leakage": "Stage 1   — leakage / split hygiene",
+    "reality": "Stage 1.5 — data reality / feasibility (numbers or CSV)",
+    "value": "Stage 2.5 — value / economics",
+    "planted": "Stage 4   — planted-signal meta-falsification",
+    "closed-loop": "Stage 5   — closed-loop external-oracle diagnostic",
+    "prereg": "Stage 2   — date-locked pre-registration",
+}
+
+
+def _print_help():
+    print("falsify — ML-project-viability diagnostics (standalone CLI; no Claude needed)\n")
+    print("usage: falsify <subcommand> [args...]\n")
+    print("subcommands:")
+    for name in _ROUTES:
+        print(f"  {name:<12} {_SUMMARY[name]}")
+    print("\n  --where        print the repo root (LIFECYCLE.md, templates/, examples/ live there)")
+    print("  --help         this message\n")
+    print("Run `falsify <subcommand> --help` for a subcommand's own options.")
+    print("For the interactive 10-stage walkthrough, use the /falsify skill inside Claude Code.")
+    print(f"Docs: {_REPO_ROOT / 'LIFECYCLE.md'}")
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+
+    if not argv:
+        _print_help()
+        return 2  # no subcommand is a usage error
+
+    first = argv[0]
+    if first in ("-h", "--help", "help"):
+        _print_help()
+        return 0
+    if first in ("--where", "where", "--root", "root"):
+        print(str(_REPO_ROOT))
+        return 0
+
+    if first not in _ROUTES:
+        print(f"falsify: unknown subcommand {first!r}\n", file=sys.stderr)
+        _print_help()
+        return 2
+
+    script = _SCRIPTS_DIR / _ROUTES[first]
+    if not script.is_file():
+        print(f"falsify: script not found: {script}\n"
+              f"(the install may be broken — re-run install.sh)", file=sys.stderr)
+        return 3
+
+    # Hand off to the script with the remaining args; replace this process so the
+    # subcommand's exit code and stdio pass straight through.
+    cmd = [sys.executable, str(script), *argv[1:]]
+    os.execv(sys.executable, cmd)
+    # execv only returns on failure:
+    print("falsify: failed to exec subcommand", file=sys.stderr)  # pragma: no cover
+    return 127  # pragma: no cover
+
+
+if __name__ == "__main__":
+    sys.exit(main())
