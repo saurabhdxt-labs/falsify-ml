@@ -1,6 +1,6 @@
 # Stage 1 — Data Contract + Leakage — <project/claim name>
 
-> Lifecycle stage 1 of 7. See ../LIFECYCLE.md. This stage asks "is the data CLEAN?"
+> Lifecycle stage 1. See ../LIFECYCLE.md. This stage asks "is the data CLEAN?"
 > (Stage 1.5 asks the separate question "is the signal even PRESENT?")
 
 **Date:** <YYYY-MM-DD>

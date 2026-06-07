@@ -1,6 +1,6 @@
 # Stage 7 — Stopping Rule — <project/claim name>
 
-> Lifecycle stage 7 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 7. See ../LIFECYCLE.md.
 > Decide what "done" means before you start iterating, or you will iterate forever.
 
 **Date:** <YYYY-MM-DD>

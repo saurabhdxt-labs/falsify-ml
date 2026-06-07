@@ -1,6 +1,6 @@
 # Stage 6 — Deploy + Monitor Drift — <project/claim name>
 
-> Lifecycle stage 6 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 6. See ../LIFECYCLE.md.
 > A model that passed Stage 5 can still rot in production. This stage is how you notice.
 
 **Date:** <YYYY-MM-DD>

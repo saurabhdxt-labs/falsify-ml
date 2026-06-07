@@ -1,6 +1,6 @@
 # Stage 2 — Baseline Before Training — <project/claim name>
 
-> Lifecycle stage 2 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 2. See ../LIFECYCLE.md.
 > Fill this BEFORE training. The point is to lock the bar before a result can bias it.
 
 **Date:** <YYYY-MM-DD>  (must predate the first training run)

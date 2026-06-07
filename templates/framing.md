@@ -1,7 +1,7 @@
 # Stage 0 — Problem Framing — <project/claim name>
 
 > Copy this file into your project, fill every field. An unfilled field is an unanswered risk.
-> Lifecycle stage 0 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 0. See ../LIFECYCLE.md.
 
 **Date:** <YYYY-MM-DD>
 

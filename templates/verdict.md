@@ -1,6 +1,6 @@
 # Stage 5 — Verdict Card — <claim slug>
 
-> Lifecycle stage 5 of 7 (the falsification deep dive). See ../PROTOCOL.md and the /falsify skill.
+> Lifecycle stage 5 (the falsification deep dive). See ../PROTOCOL.md and the /falsify skill.
 > One verdict per card, dated. No "probably," "partially," "directionally," or "tests pass."
 
 **Date:** <YYYY-MM-DD>  **Hypothesis slug:** <kebab-case>

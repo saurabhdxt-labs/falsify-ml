@@ -1,6 +1,6 @@
 # Stage 2.5 — Value / Economics Case — <project/claim name>
 
-> Lifecycle stage 2.5 of 7+. See ../LIFECYCLE.md.
+> Lifecycle stage 2.5. See ../LIFECYCLE.md.
 > A project can be scientifically sound and still not worth building. This stage asks: do the
 > economics work? Fill the numbers, then feed them to `scripts/value_check.py`.
 

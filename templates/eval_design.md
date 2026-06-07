@@ -1,6 +1,6 @@
 # Stage 4 — Eval Design — <project/claim name>
 
-> Lifecycle stage 4 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 4. See ../LIFECYCLE.md.
 > Decide these BEFORE looking at results, then lock them in Stage 5's pre-registration.
 
 **Date:** <YYYY-MM-DD>

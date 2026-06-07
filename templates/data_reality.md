@@ -1,6 +1,6 @@
 # Stage 1.5 — Data Reality Check — <project/claim name>
 
-> Lifecycle stage 1.5 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 1.5. See ../LIFECYCLE.md.
 > The question here is NOT "is the data clean?" (Stage 1) — it is "can the data PHYSICALLY support
 > the claim at all?" A perfectly clean dataset can still be unable to support the model you want.
 

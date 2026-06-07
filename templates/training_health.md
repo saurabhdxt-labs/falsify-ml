@@ -1,6 +1,6 @@
 # Stage 3 — Training Health — <project/claim name>
 
-> Lifecycle stage 3 of 7. See ../LIFECYCLE.md.
+> Lifecycle stage 3. See ../LIFECYCLE.md.
 
 **Date:** <YYYY-MM-DD>  **Run id / checkpoint:** <...>
 
