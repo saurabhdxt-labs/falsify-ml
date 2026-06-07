@@ -255,9 +255,11 @@ science." *Patterns*, 4(9):100804, 2023. https://doi.org/10.1016/j.patter.2023.1
 
 [3] K. Popper. *The Logic of Scientific Discovery.* 1959.
 
-[4] Pre-registration for machine learning — see e.g. the NeurIPS pre-registration experiment and
-subsequent discussion of confirmatory vs. exploratory ML research. (General reference; verify the
-specific venue/year before citing in a formal submission.)
+[4] L. Bertinetto, J. F. Henriques, S. Albanie, et al. (eds.). *Proceedings of the NeurIPS 2020/2021
+Workshops on Pre-registration in Machine Learning.* PMLR Volumes 148 (2020) and 181 (2021).
+https://proceedings.mlr.press/v148/ , https://proceedings.mlr.press/v181/ . See also
+J. M. Hofman, A. Chatzimparmpas, A. Sharma, D. J. Watts, and J. Hullman, "Pre-registration for
+Predictive Modeling," arXiv:2311.18807, 2023.
 
 ---
 
