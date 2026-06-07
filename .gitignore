@@ -14,3 +14,9 @@ examples/*/predictions.csv
 
 # Personal launch draft — not part of the package.
 LINKEDIN_DRAFT.md
+
+# LaTeX build intermediates (the .tex source and built .pdf ARE committed).
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
